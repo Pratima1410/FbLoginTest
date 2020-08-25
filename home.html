@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+	<head>
+		<meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <title>Fb Login Test</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="CSS buttons with pseudo-elements" />
+        <meta name="keywords" content="css, css3, pseudo, buttons, anchor, before, after, web design" />
+        <link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style4.css" />
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		
+		<script>
+
+	function login(){
+		FB.login(function(response) {
+		    if (response.authResponse) {
+			     console.log('Welcome! Fetching your information.... ');
+			     FB.api('/me', function(response) {
+			       console.log(response);
+				   document.getElementById("name").innerHTML = response.name;
+				   document.getElementById("username").style.display="block";
+			     document.getElementById("logoutbtn").style.display="block";
+				 document.getElementById("loginbtn").style.display="none";
+				 get_user_picture();
+			     });
+			     
+		    }else{
+		     	console.log('User cancelled login or did not fully authorize.');
+		     	
+		    }
+		} , {scope: 'public_profile,email'});		
+	}
+	function logout(){
+				FB.logout();
+                 document.getElementById("username").style.display="none";
+			     document.getElementById("logoutbtn").style.display="none";
+				 document.getElementById("loginbtn").style.display="block";
+			document.getElementById("userprofilediv").style.display="none";
+	}
+
+
+	function get_user_picture(){
+
+		FB.getLoginStatus(function(response) {
+			console.log(response.status);
+		  if (response.status === 'connected') {
+		  	
+			FB.api(
+				  '/'+response.authResponse.userID+'/picture',
+				  'GET',
+				  {"redirect":"false",
+				  "type" : "large",
+				  "height" : 400,
+				  "widht" : 400
+				  },
+				  function(response2) {
+				  document.getElementById("userprofilediv").style.display="block";
+					 document.getElementById("userprofile").src=response2.data.url;
+				  }
+				);
+			
+		  	<!-- FB.api('/'+response.authResponse.userID+'/picture' , function(response2) { -->
+		       		<!-- console.log(response2.data.url); -->
+					<!-- document.getElementById("userprofile").src=response2.data.url; -->
+			<!-- }); -->
+		    
+		  } else if (response.status === 'not_authorized') {
+		    // the user is logged in to Facebook, 
+		    // but has not authenticated your app
+		  } else {
+		    FB.login(function(response) {});
+		  }
+		});
+	}
+
+  function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    console.log('statusChangeCallback');
+    console.log(response);                   // The current login status of the person.
+    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+      testAPI();  
+    } else {                                 // Not logged into your webpage or we are unable to tell.
+     console.log(response);
+    }
+  }
+
+
+  function checkLoginState() {               // Called when a person is finished with the Login Button.
+    FB.getLoginStatus(function(response) {   // See the onlogin handler
+      statusChangeCallback(response);
+    });
+  }
+
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '859763524427596',
+      cookie     : true,                     // Enable cookies to allow the server to access the session.
+      xfbml      : true,                     // Parse social plugins on this webpage.
+      version    : 'v8.0'           // Use this Graph API version for this call.
+    });
+
+
+    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+      statusChangeCallback(response);        // Returns the login status.
+    });
+  };
+ 
+  function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+     document.getElementById("name").innerHTML = response.name;
+	document.getElementById("username").style.display="block";
+	  document.getElementById("logoutbtn").style.display="block";
+				 document.getElementById("loginbtn").style.display="none";
+				 get_user_picture();
+    });
+  }
+
+</script>
+
+    </head>
+    <body>
+        <div class="container">
+			<header>
+			<div id ="username" style="display:none;">
+                <h1>Welcome <span id="name"></span></h1>
+				</div>
+              
+			</header>
+			<section>
+                <div id="container_buttons">
+				<p id="userprofilediv" style="padding-bottom:0px; display:none;">
+				<img src="#" id="userprofile" style="width : 100%" />
+				</p>
+                    <p style="padding-bottom:0px;">
+                        <a class="a_demo_four" href="#" onclick="login()" id="loginbtn"  >
+                            Log In With Fb!
+                        </a>
+                    </p>
+                     <p style="padding-bottom:0px;">
+                        <a class="a_demo_four" href="#" id="logoutbtn" onclick="logout()"  style="display:none;">
+                            Log Out !!!
+                        </a>
+                    </p>
+                </div>
+			</section>
+        </div>
+    </body>
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+</html>
