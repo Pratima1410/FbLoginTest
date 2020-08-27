@@ -1,29 +1,8 @@
-# Foobar
+Welcome to Login to website using facebook or Allow users to sign-up to a website using facebook credential by one click login.
 
-Foobar is a Python library for dealing with word pluralization.
+Step 1: Go to link https://pratima-website.herokuapp.com/. Click Log in  
+This window will appear on next screen.
+Step 2: Log in with facebook account by entering the username and passwords.  or create the account (If new user) with Facebook by filling all the essential information. 
 
-## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
-```bash
-pip install foobar
-```
-
-## Usage
-
-```python
-import foobar
-
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
-```
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
